@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "820816770042",
+    "project_id": "surigas-c0986",
+    "storage_bucket": "surigas-c0986.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:820816770042:android:d6e0eac481435795ec2a43",
+        "android_client_info": {
+          "package_name": "com.sanjay.surigas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "820816770042-0dvepgb3g88b2lgbeo2viaup48g15t1b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe2cKUKC1TtuHmIaFyGo79Je8vSivy16U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "820816770042-0dvepgb3g88b2lgbeo2viaup48g15t1b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
