@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:surigas/view/screens/login/register_form.dart';
 import 'package:surigas/view/screens/purchase_page/purchase_view.dart';
 import 'package:surigas/view/screens/salespage/sales_view.dart';
 
@@ -12,6 +15,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    FirebaseFirestore.instance.collection("client").where("mobile_number",isEqualTo: int.parse(FirebaseAuth.instance.currentUser!.phoneNumber!.replaceAll("+91",""))).get().then((value) {
+      if(value.docs.isEmpty){
+        Get.off(RegisterForm());
+      }
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

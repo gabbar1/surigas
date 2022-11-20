@@ -1,10 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:surigas/view_model/login_auth_vm/login_auth_vm.dart';
-import '../homepage/HomePage_view.dart';
+
 
 
 class LoginPage extends StatefulWidget {
@@ -63,45 +62,45 @@ class _LoginPageState extends State<LoginPage> {
                         ],
                       ),
                       SizedBox(height: 15.0,),
-                      TextField(
-                        textInputAction: TextInputAction.next,
+                      Obx(()=>TextField(
+                        readOnly: loginAuthVM.getIsOtp,
+
+                        textInputAction: TextInputAction.done,
                         controller: _emailController,
-                        keyboardType: TextInputType.emailAddress,
+                        keyboardType: TextInputType.phone,
+                        onSubmitted: (_){
+                          loginAuthVM.login(phone:_emailController.text);
+                        },
                         decoration: InputDecoration(
-                            hintText: "User Email",
+                            hintText: "Enter Phone Number",
                             hintStyle: TextStyle(fontWeight: FontWeight.bold),
                             enabledBorder: border,
                             focusedBorder: border,
                             prefixIcon: Icon(
-                              Icons.mail_outline_outlined,
+                              Icons.phone,
                               color: Colors.blue,
                             )),
-                      ),
-                      const SizedBox(height: 15.0,),
-                      TextFormField(
+                      )),
+                      Obx(()=> SizedBox(height: (loginAuthVM.getIsOtp)==true?15.0:0.0,),),
+                      Obx(()=>(loginAuthVM.getIsOtp)==true?TextFormField(
                         textInputAction: TextInputAction.done,
                         controller: _passwordController,
                         obscureText: isSecured,
                         decoration: InputDecoration(
-                          hintText: "Password",
-                          hintStyle: TextStyle(fontWeight: FontWeight.bold),
-                          enabledBorder: border,
-                          focusedBorder: border,
-                          prefixIcon: Icon(
-                            Icons.lock_outline_sharp,
-                            color: Colors.blue,
-                          ),
-                          suffixIcon: IconButton(icon: Icon(!isSecured ? Icons.visibility:Icons.visibility_off),onPressed: (){
-                            isSecured = !isSecured;
-                            setState(() {
+                            hintText: "OTP",
+                            hintStyle: TextStyle(fontWeight: FontWeight.bold),
+                            enabledBorder: border,
+                            focusedBorder: border,
+                            prefixIcon: Icon(
+                              Icons.lock_outline_sharp,
+                              color: Colors.blue,
+                            ),
 
-                            });
-                          },)
                         ),
 
-                      ),
-                      const SizedBox(height: 50.0,),
-                      Container(
+                      ):SizedBox()),
+                      Obx(()=> SizedBox(height:(loginAuthVM.getIsOtp)==true? 50.0:10.0,)),
+                      Obx(()=>Container(
                         width: double.infinity,
                         child: RawMaterialButton(
                           fillColor: Colors.blue,
@@ -111,14 +110,19 @@ class _LoginPageState extends State<LoginPage> {
                             borderRadius: BorderRadius.circular(16.0),
                           ),
                           onPressed: () async {
-                            loginAuthVM.loginUsingEmailPassword(email: _emailController.text,password: _passwordController.text);
+                            if(loginAuthVM.getIsOtp){
+                              loginAuthVM.loginUser(otp: _passwordController.text,context: context);
+                            }else{
+                              loginAuthVM.login(phone:_emailController.text);
+                            }
+
                           },
                           child: Text(
-                            "Login",
+                           loginAuthVM.getIsOtp==false? "Login":"Verify",
                             style: TextStyle(color: Colors.white, fontSize: 18),
                           ),
                         ),
-                      ),
+                      )),
                       SizedBox(height: 110.0,)
                     ],
                   ),
