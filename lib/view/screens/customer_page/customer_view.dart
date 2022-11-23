@@ -16,6 +16,8 @@ class Customer extends StatefulWidget {
 
 class _CustomerState extends State<Customer> {
   TextEditingController fullCylinderController = TextEditingController();
+  TextEditingController emptyCylinderController = TextEditingController();
+  TextEditingController receivedCylinderController = TextEditingController();
   final _globalFistKey = GlobalKey<FormState>();
   final _globalSecondKey = GlobalKey<FormState>();
   CustomerPageVM customerPageVM = Get.put(CustomerPageVM());
@@ -89,6 +91,7 @@ class _CustomerState extends State<Customer> {
                         height: 10.0,
                       ),
                       TextFormField(
+                        controller: emptyCylinderController,
                         decoration: InputDecoration(
                             hintText: "Empty Cylinder",
                             border: OutlineInputBorder(
@@ -221,6 +224,7 @@ class _CustomerState extends State<Customer> {
                       ),
                       SizedBox(height: 10,),
                       TextFormField(
+                        controller: receivedCylinderController,
                         decoration: InputDecoration(
                             hintText: "Received Amount",
                             border: OutlineInputBorder(

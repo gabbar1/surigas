@@ -15,12 +15,11 @@ class Purchase extends StatefulWidget {
 
 class _PurchaseState extends State<Purchase> {
   int count = 0;
+  PurchaseModelView purchaseModelView = Get.put(PurchaseModelView());
   TextEditingController nameController = TextEditingController();
   TextEditingController mobileNumberController = TextEditingController();
   TextEditingController addressController = TextEditingController();
-  TextEditingController amountController = TextEditingController();
-
-  PurchaseModelView purchaseModelView = Get.put(PurchaseModelView());
+  TextEditingController itemtController = TextEditingController();
   Timer? _debounce;
   @override
   void initState() {
@@ -28,130 +27,155 @@ class _PurchaseState extends State<Purchase> {
     super.initState();
   }
 
-  final _globalKey = GlobalKey<FormState>();
+  final _globalthreeKey = GlobalKey<FormState>();
   Future<void> showInformationDialog() async {
     return showModalBottomSheet(
+        isScrollControlled: true,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.0),
+                topRight: Radius.circular(30.0))),
         context: context,
         builder: (BuildContext context) {
           return SingleChildScrollView(
-            child: Form(
-              key: _globalKey,
-              child: Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                           const Text(
-                            "Add",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          const  SizedBox(
-                            width: 10,
-                          ),
-                          const  Text(
-                            "Dealer",
-                            style: TextStyle(color: Colors.blue, fontSize: 20),
-                          )
-                        ],
-                      ),
-                      IconButton(
-                          onPressed: () {
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 20,
+                left: 20,
+                right: 20,
+              ),
+              child: Form(
+                key: _globalthreeKey,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            const Text(
+                              "Add",
+                              style: TextStyle(fontSize: 20),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            const Text(
+                              "Dealer",
+                              style:
+                                  TextStyle(color: Colors.blue, fontSize: 20),
+                            )
+                          ],
+                        ),
+                        IconButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            icon: Icon(Icons.close))
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    TextFormField(
+                      textInputAction: TextInputAction.next,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      controller: nameController,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Please Enter Name";
+                        } else if (value!.isNum) {
+                          return "Please Enter Valid Name";
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                          hintText: "Dealer Name",
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0))),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    TextFormField(
+                      textInputAction: TextInputAction.next,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      controller: mobileNumberController,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return "Please Enter Mobile Number";
+                        } else if (value!.isAlphabetOnly) {
+                          return "Please Enter Mobile Number";
+                        } else if (value.length < 10) {
+                          return ' Please Enter  Valid Mobile Number';
+                        } else if (value.length > 12) {
+                          return 'Please Enter Valid Mobile Number';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                          hintText: "contact No",
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20))),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    TextFormField(
+                      textInputAction: TextInputAction.next,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      controller: addressController,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please Enter Address';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                          hintText: "address ",
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0))),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    TextFormField(
+                      textInputAction: TextInputAction.next,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      controller: itemtController,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return 'Please Enter amount';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                          hintText: "Item",
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20.0))),
+                    ),
+                    const SizedBox(
+                      height: 10.0,
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          if (_globalthreeKey.currentState!.validate()) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text('Processing Data')));
+                            FirebaseFirestore.instance.collection("agent").add({
+                              "name": nameController.text,
+                              "mobile_number":
+                                  int.parse(mobileNumberController.text),
+                              "address": addressController.text,
+                              "item": itemtController.text,
+                            });
                             Navigator.of(context).pop();
-                          },
-                          icon: Icon(Icons.clear))
-                    ],
-                  ),
-                  SizedBox(height: 15,),
-                  TextFormField(
-                    key: _globalKey,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    controller: nameController,
-                    validator: (value){
-                      if(value!.isEmpty){
-                        return "Please Enter Name";
-                      } else if(value!.isNum){
-                        return "Please Enter Valid Name";
-                      }
-                      return null;
-                    },
-                  decoration: InputDecoration(hintText: "Dealer Name",
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(20.0))),),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    controller: mobileNumberController,
-                    validator: (value){
-                      if (value!.isEmpty){
-                        return "Please Enter Mobile Number";
-                      } else if (value!.isAlphabetOnly){
-                        return "Please Enter Mobile Number";
-                      }else if (value.length < 10) {
-                        return ' Please Enter  Valid Mobile Number';
-                      } else if (value.length > 12) {
-                        return 'Please Enter Valid Mobile Number';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(hintText: "contact No",
-                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(20))),
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    controller: addressController,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please Enter Address';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                        hintText: "address ",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20.0))),
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  TextFormField(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please Enter amount';
-                      } else if (value!.isAlphabetOnly) {
-                        return 'Please Enter Valid Amount';
-                      } else if (value.length > 6) {
-                        return ' Please Enter  Valid Amount';
-                      }
-                      return null;
-                    },
-                    decoration: InputDecoration(
-                        hintText: "amount",
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20.0))),
-                  ),
-                  const SizedBox(
-                    height: 10.0,
-                  ),
-                  ElevatedButton(onPressed: (){
-                    if (_globalKey.currentState!.validate()){
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Processing Data')));
-                      FirebaseFirestore.instance.collection("agent").add({
-                        "name": nameController.text,
-                        "mobile_number" : int.parse(mobileNumberController.text),
-                        "address" : addressController.text,
-                        "amount" : int.parse(amountController.text),
-                      });
-                    }
-                  }, child: const Text('Add Customer'))
-                ],
+                          }
+                        },
+                        child: const Text('Add Customer'))
+                  ],
+                ),
               ),
             ),
           );
@@ -234,7 +258,9 @@ class _PurchaseState extends State<Purchase> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: ()async {
+          await showInformationDialog();
+        } ,
         elevation: 10,
         child: Icon(Icons.add),
       ),

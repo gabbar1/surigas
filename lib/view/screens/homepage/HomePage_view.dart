@@ -3,9 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:surigas/view/screens/expanse_page/expanse_view.dart';
 import 'package:surigas/view/screens/login/register_form.dart';
 import 'package:surigas/view/screens/purchase_page/purchase_view.dart';
 import 'package:surigas/view/screens/salespage/sales_view.dart';
+
+import '../product_list_page/product_list_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -171,28 +174,30 @@ class _HomePageState extends State<HomePage> {
                     SizedBox(
                       width: 162.0,
                       height: 115.0,
-                      child: Card(
-                        color: Color(0xFFE5F1F8),
-                        elevation: 2.0,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8.0)),
-                        child: Padding(
-                          padding: const EdgeInsets.all(15.0),
-                          child: Column(
-                            children: [
-                              SvgPicture.asset(
-                                  "assets/images/ri-ship-2-fill.svg"),
-                              Center(
-                                child: Text(
-                                  "Expanse",
-                                  style: TextStyle(
-                                    color: Color(0xFF0077B5),
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15.0,
+                      child: InkWell( onTap: (){Navigator.push(context, MaterialPageRoute(builder: (context)=> Expanse()));},
+                        child: Card(
+                          color: Color(0xFFE5F1F8),
+                          elevation: 2.0,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.0)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(15.0),
+                            child: Column(
+                              children: [
+                                SvgPicture.asset(
+                                    "assets/images/ri-ship-2-fill.svg"),
+                                Center(
+                                  child: Text(
+                                    "Expanse",
+                                    style: TextStyle(
+                                      color: Color(0xFF0077B5),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15.0,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -233,6 +238,11 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(onPressed: (){
+        Get.to(ProductListPage());
+      },child: Icon(Icons.add)),
     );
   }
+
+
 }
