@@ -8,7 +8,7 @@ class ProductPriceModel {
 
   ProductPriceModel.fromJson(Map<String, dynamic> json) {
     productName = json['product_name'];
-    productPrice = json['product_price'];
+    productPrice = num.parse(json['product_price'].toString());
     isReplaceable = json['isReplaceable'];
     key = json['key'];
   }
@@ -22,3 +22,6 @@ class ProductPriceModel {
     return data;
   }
 }
+
+
+

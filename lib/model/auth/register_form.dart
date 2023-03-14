@@ -8,6 +8,7 @@ class RegisterFormModel {
   int? orgId;
   int? refId;
   bool? isDealder;
+  bool? isEnabled;
 
   RegisterFormModel(
       {this.name,
@@ -17,7 +18,8 @@ class RegisterFormModel {
         this.pincode,
         this.orgId,
         this.refId,
-        this.isDealder
+        this.isDealder,
+        this.isEnabled,
       });
 
   RegisterFormModel.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class RegisterFormModel {
     orgId = json['org_id'];
     refId = json['ref_id'];
     isDealder = json['isDealder'];
+    isEnabled = json['isEnabled'];
   }
 
   Map<String, dynamic> toJson() {
@@ -41,6 +44,7 @@ class RegisterFormModel {
     data['org_id'] = this.orgId;
     data['ref_id'] = this.refId;
     data['isDealder'] = this.isDealder;
+    data['isEnabled'] = this.isEnabled;
     return data;
   }
 }

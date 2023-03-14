@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:surigas/view/screens/login/login_view.dart';
+import 'package:upgrader/upgrader.dart';
 
 import 'view/screens/login/authenticator.dart';
 Future<void> main() async {

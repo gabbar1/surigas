@@ -20,7 +20,7 @@ class _ProductListPageState extends State<ProductListPage> {
  @override
   void initState() {
     // TODO: implement initState
-   productListVM.fetchProductList();
+   productListVM.fetchProductList(false);
     super.initState();
   }
   @override
@@ -117,6 +117,7 @@ class _ProductListPageState extends State<ProductListPage> {
                       ),
                       TextFormField(
                         controller: productPriceController,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             hintText: "Product Price",
                             border: OutlineInputBorder(

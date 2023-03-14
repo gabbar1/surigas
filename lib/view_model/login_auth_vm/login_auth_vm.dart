@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:surigas/model/auth/register_form.dart';
+import 'package:surigas/view/screens/homepage/home_navigator/home_navigator.dart';
 
 import '../../utils/loader.dart';
 import '../../view/screens/homepage/HomePage_view.dart';
@@ -120,8 +121,8 @@ class LoginAuthVM extends GetxController{
    Future<void> registerUser({required RegisterFormModel val})async{
      try{
        showLoader();
-       FirebaseFirestore.instance.collection("client").add(val.toJson()).then((value) {
-         Get.offAll(HomePage());
+       FirebaseFirestore.instance.collection("dealer").add(val.toJson()).then((value) {
+         Get.offAll(HomeNavigator());
          closeLoader();
        });
      }on Exception catch(e){

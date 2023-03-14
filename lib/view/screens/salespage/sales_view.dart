@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:surigas/view/screens/customer_page/customer_view.dart';
 
+import '../../../view_model/product_list_vm/product_list_vm.dart';
 import '../../../view_model/sales_model_view/sale_model_view.dart';
 
 class Sales extends StatefulWidget {
@@ -21,17 +22,18 @@ class _SalesState extends State<Sales> {
   TextEditingController mobileNumberController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController amountController = TextEditingController();
+  ProductListVM productListVM = Get.put(ProductListVM());
   Timer? _debounce;
   @override
   void initState() {
     // TODO: implement initState
     salesModelView.fetchSalesList();
+    productListVM.fetchProductList(false);
     super.initState();
   }
   final _globalKey = GlobalKey<FormState>();
   Future<void> showInformationDialog() async {
     return showModalBottomSheet(
-
         isScrollControlled: true,
         shape:const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
@@ -98,6 +100,7 @@ class _SalesState extends State<Sales> {
                       height: 10.0,
                     ),
                     TextFormField(
+                      keyboardType: TextInputType.phone,
                       controller: mobileNumberController,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
@@ -134,28 +137,6 @@ class _SalesState extends State<Sales> {
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20.0))),
                     ),
-                    const SizedBox
-                      (
-                      height: 10.0,
-                    ),
-                    TextFormField(
-                      controller: amountController,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please Enter amount';
-                        } else if (value!.isAlphabetOnly) {
-                          return 'Please Enter Valid Amount';
-                        } else if (value.length > 6) {
-                          return ' Please Enter  Valid Amount';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          hintText: "amount",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20.0))),
-                    ),
                     const SizedBox(
                       height: 10.0,
                     ),
@@ -174,7 +155,6 @@ class _SalesState extends State<Sales> {
                               "name": nameController.text,
                               "mobile_number":int.parse(mobileNumberController.text),
                               "address":  addressController.text,
-                              "amount": int.parse(amountController.text),
                             });
                             Navigator.of(context).pop();
                           }
@@ -234,7 +214,7 @@ class _SalesState extends State<Sales> {
                 if (_debounce?.isActive ?? false) _debounce?.cancel();
                 _debounce = Timer(const Duration(milliseconds: 500), () {
                   salesModelView
-                      .searchSalesUSer(val.capitalizeFirst.toString());
+                      .searchSalesUSer(val.camelCase.toString());
                 });
               },
             ),
@@ -253,13 +233,12 @@ class _SalesState extends State<Sales> {
                           .getSalesModel[index].mobileNumber
                           .toString()),
                       onTap: () {
+                        productListVM.setUserKey = salesModelView.getSalesModel[index].key.toString();
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => Customer(
-                              name:
-                              salesModelView.getSalesModel[index].name,
-                              mobileNumber: salesModelView
-                                  .getSalesModel[index].mobileNumber,
+                            builder: (context) => Customer(name: salesModelView.getSalesModel[index].name,
+                              mobileNumber: salesModelView.getSalesModel[index].mobileNumber,
                               address: salesModelView.getSalesModel[index].address,
+                              userKey: salesModelView.getSalesModel[index].key,
                             )));
                       },
                     );

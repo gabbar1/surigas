@@ -19,6 +19,7 @@ class SalesModelView extends GetxController{
       if(value.docs.isNotEmpty){
         value.docs.forEach((element) {
           SalesModel salesModel = SalesModel.fromJson(  element.data());
+          salesModel.key = element.id;
           setSalesModel(salesModel);
 
         });
@@ -34,6 +35,7 @@ class SalesModelView extends GetxController{
       if(value.docs.isNotEmpty){
         value.docs.forEach((element) {
           SalesModel salesModel = SalesModel.fromJson(  element.data());
+          salesModel.key = element.id;
           setSalesModel(salesModel);
         });
       }

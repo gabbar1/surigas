@@ -2,6 +2,7 @@ class SalesModel {
   int? mobileNumber;
   String? name;
   String? address;
+  String? key;
 
   SalesModel({this.mobileNumber, this.name, this.address});
 
@@ -9,6 +10,7 @@ class SalesModel {
     mobileNumber = json['mobile_number'];
     address = json['address'];
     name = json['name'];
+    key = json['key'];
   }
 
   Map<String, dynamic> toJson() {
@@ -16,6 +18,7 @@ class SalesModel {
     data['mobile_number'] = this.mobileNumber;
     data['address'] = this.address;
     data['name'] = this.name;
+    data['key'] = this.key;
     return data;
   }
 }

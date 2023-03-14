@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:surigas/utils/loader.dart';
 import 'package:surigas/view/screens/agent_page/agent_view.dart';
 
+import '../../../view_model/product_list_vm/product_list_vm.dart';
 import '../../../view_model/purchase_model_view/purchase_model_view.dart';
 
 class Purchase extends StatefulWidget {
@@ -21,9 +23,11 @@ class _PurchaseState extends State<Purchase> {
   TextEditingController addressController = TextEditingController();
   TextEditingController itemtController = TextEditingController();
   Timer? _debounce;
+  ProductListVM productListVM = Get.put(ProductListVM());
   @override
   void initState() {
     purchaseModelView.fetchPurchaseList();
+    productListVM.fetchProductList(false);
     super.initState();
   }
 
@@ -39,10 +43,11 @@ class _PurchaseState extends State<Purchase> {
         builder: (BuildContext context) {
           return SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.only(
+              padding:  EdgeInsets.only(
                 top: 20,
                 left: 20,
                 right: 20,
+                bottom: MediaQuery.of(context).viewInsets.bottom
               ),
               child: Form(
                 key: _globalthreeKey,
@@ -98,6 +103,7 @@ class _PurchaseState extends State<Purchase> {
                       height: 10.0,
                     ),
                     TextFormField(
+                      keyboardType: TextInputType.phone,
                       textInputAction: TextInputAction.next,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       controller: mobileNumberController,
@@ -139,30 +145,9 @@ class _PurchaseState extends State<Purchase> {
                     const SizedBox(
                       height: 10.0,
                     ),
-                    TextFormField(
-                      textInputAction: TextInputAction.next,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      controller: itemtController,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Please Enter amount';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                          hintText: "Item",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(20.0))),
-                    ),
-                    const SizedBox(
-                      height: 10.0,
-                    ),
                     ElevatedButton(
                         onPressed: () {
                           if (_globalthreeKey.currentState!.validate()) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content: Text('Processing Data')));
                             FirebaseFirestore.instance.collection("agent").add({
                               "name": nameController.text,
                               "mobile_number":
@@ -228,7 +213,7 @@ class _PurchaseState extends State<Purchase> {
                 if (_debounce?.isActive ?? false) _debounce?.cancel();
                 _debounce = Timer(const Duration(milliseconds: 500), () {
                   purchaseModelView.SearchPurchaseUser(
-                      val.capitalizeFirst.toString());
+                      val.camelCase .toString());
                 });
               },
             ),
@@ -246,15 +231,24 @@ class _PurchaseState extends State<Purchase> {
                       subtitle: Text(purchaseModelView
                           .getPurchaseModel[index].mobileNumber
                           .toString()),
-                      onTap: () {
+                      onTap: () {/*Get.to(Agent(name: purchaseModelView
+                          .getPurchaseModel[index].name,
+                        keys:  purchaseModelView
+                            .getPurchaseModel[index].key,));*/
                         Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => agent(
+                            builder: (context) => Agent(
                                   name: purchaseModelView
                                       .getPurchaseModel[index].name,
+                              keys:  purchaseModelView
+                                  .getPurchaseModel[index].key,
                                 )));
+                         // showLoader();
+
                       },
                     );
-                  })))
+
+                  }),),)
+
         ],
       ),
       floatingActionButton: FloatingActionButton(

@@ -100,7 +100,8 @@ class RegisterForm extends StatelessWidget {
                       orgId: int.parse(_orgController.text),
                       pincode: int.parse(_pincodeController.text),
                       refId:_refController.text.isNotEmpty? int.parse(_refController.text):null,
-                    isDealder: _orgController.text == FirebaseAuth.instance.currentUser!.phoneNumber!.replaceAll("+91", "")? true:false
+                    isDealder: _orgController.text == FirebaseAuth.instance.currentUser!.phoneNumber!.replaceAll("+91", "")? true:false,
+                    isEnabled: false
                   );
                   loginAuthVM.registerUser(val: registerFormModel);
 

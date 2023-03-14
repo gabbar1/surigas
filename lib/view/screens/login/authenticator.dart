@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:surigas/view/screens/homepage/HomePage_view.dart';
+import 'package:surigas/view/screens/homepage/home_navigator/home_navigator.dart';
 import 'package:surigas/view/screens/login/login_view.dart';
 class Authenticator extends StatelessWidget {
   const Authenticator({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class Authenticator extends StatelessWidget {
         builder: ((context, snapshot) {
          if(snapshot.hasData){
 
-           return HomePage();
+           return HomeNavigator();
          }else{
            return LoginPage();
          }
