@@ -123,7 +123,6 @@ class _CustomerState extends State<Customer> {
                                     child: IconButton(
                                       icon: Icon(Icons.clear_rounded),
                                       onPressed: () =>
-                                          Navigator.of(context).pop(),
                                     ))
                               ],
                             )
