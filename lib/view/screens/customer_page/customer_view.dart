@@ -122,7 +122,7 @@ class _CustomerState extends State<Customer> {
                                     alignment: Alignment.topRight,
                                     child: IconButton(
                                       icon: Icon(Icons.clear_rounded),
-                                      onPressed: () =>
+                                      onPressed: (){}
                                     ))
                               ],
                             )
